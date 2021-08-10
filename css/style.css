@@ -1,0 +1,98 @@
+* {
+	margin: 0 auto;
+}
+
+body {
+	background: black;
+	color: silver;
+}
+
+header {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+}
+
+#main {
+	margin-top: 40px;
+	width: 361px;
+	height: 645px;
+	position: relative;
+
+}
+
+
+#left-edge {
+	position: absolute;
+	width: 25px;
+	height: 620px;
+	left: 0;
+	background: linear-gradient(0.75turn, #3f87a6, #ebf8e1, #405060);
+
+	
+	
+}
+
+#left-edge:after {
+  background: inherit;
+  bottom: 0;
+  content: '';
+  display: block;
+  height: 50%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  transform: skewY(-45deg);
+  transform-origin: 100%;
+  z-index: -1;
+}
+
+
+#right-edge {
+	position: absolute;
+	width: 25px;
+	height: 620px;
+	right: 0;
+	background: linear-gradient(0.25turn, #3f87a6, #ebf8e1, #405060);
+
+}
+
+#right-edge:after {
+  background: inherit;
+  bottom: 0;
+  content: '';
+  display: block;
+  height: 50%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  transform: skewY(45deg);
+  transform-origin: 0;
+  z-index: -1;
+}
+
+#bottom-edge {
+	
+	position: absolute;
+	width: 361px;
+	height: 25px;
+	bottom: 0;
+	background: linear-gradient(0.50turn, #3f87a6, #ebf8e1, #405060);
+	z-index: -10;
+}
+
+#play-area {
+	width: 310px;
+	height: 620px;
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+}
+
+.cell {
+	width: 30px;
+	height: 30px;
+	box-shadow: 0 0 0 1px black;
+	border-radius: 3px;
+	background: green;
+}
