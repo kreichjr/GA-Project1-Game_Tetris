@@ -13,6 +13,10 @@ header {
 	flex-direction: column;
 }
 
+button {
+	position: absolute;
+}
+
 #main {
 	margin-top: 40px;
 	width: 361px;
@@ -21,16 +25,12 @@ header {
 
 }
 
-
 #left-edge {
 	position: absolute;
 	width: 25px;
 	height: 620px;
 	left: 0;
 	background: linear-gradient(0.75turn, #3f87a6, #ebf8e1, #405060);
-
-	
-	
 }
 
 #left-edge:after {
@@ -54,7 +54,6 @@ header {
 	height: 620px;
 	right: 0;
 	background: linear-gradient(0.25turn, #3f87a6, #ebf8e1, #405060);
-
 }
 
 #right-edge:after {
@@ -72,7 +71,6 @@ header {
 }
 
 #bottom-edge {
-	
 	position: absolute;
 	width: 361px;
 	height: 25px;
