@@ -12,6 +12,10 @@ const game = {
 	lockDelay: 30,
 	lineClear: 41,
 	internalGravity: 4,
+	AREcounter: 0,
+	DAScounter: 0,
+	lockDelayCounter: 0,
+	lineClearCounter: 0,
 	gravityCounter: 0,
 
 	start() {
@@ -34,7 +38,7 @@ const game = {
 
 			// TODO: Only occur if all of the above has finished, and ready for new piece
 			if (this.readyForNewPiece) {
-				this.currentPiece = new debugBlock()
+				this.currentPiece = new iPiece()
 				this.readyForNewPiece = false
 			}
 
@@ -56,25 +60,34 @@ const game = {
 	},
 	moveTetromino() {
 		if (this.controls.left === 1) {
-			this.currentPiece.positionX--
+			// this.currentPiece.positionX--
+			this.currentPiece.moveDirection("left", this.stack)
 		} else if (this.controls.right === 1) {
-			this.currentPiece.positionX++
+			// this.currentPiece.positionX++
+			this.currentPiece.moveDirection("right", this.stack)
 		}
 
 		// TODO: CHECK FOR COLLISION AND UNDO MOVE 
 	},
-	drawBoard() {
-		this.drawTetromino()
-	},
-	drawTetromino() {
-		let tetroX = this.currentPiece.positionX
-		let tetroY = this.currentPiece.positionY
-		let blockPositions = this.currentPiece.getBlockRelativePositions()
-		blockPositions.forEach((val)=>{
-			let realX = tetroX + val.x
-			let realY = tetroY + val.y
-			document.querySelector(`#row${realY}col${realX}`).classList.add(`has-block`, `${this.currentPiece.type}`)
+	drawStack() {
+		this.stack.forMatrix((value, row, col)=>{
+			document.querySelector(`#row${row}col${col}`).setAttribute("class","cell")
 		})
+	},
+	drawBoard() {
+		this.drawStack()
+		this.drawCurrentTetromino()
+	},
+	drawCurrentTetromino() {
+		// let tetroX = this.currentPiece.positionX
+		// let tetroY = this.currentPiece.positionY
+		// let blockPositions = this.currentPiece.getBlockRelativePositions()
+		// blockPositions.forEach((val)=>{
+		// 	let realX = tetroX + val.x
+		// 	let realY = tetroY + val.y
+		this.currentPiece.blockArr.forEach((block)=>{
+			document.querySelector(`#row${block.posY}col${block.posX}`).classList.add(`has-block`, `${this.currentPiece.type}`)
+		})	
 	},
 	_arrayEquals: function(a, b) {
   		return Array.isArray(a) &&

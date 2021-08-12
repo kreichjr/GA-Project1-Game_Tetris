@@ -27,5 +27,13 @@ class Matrix {
 			})
 		})
 	}
+	setBlocks(blocks, coordArr) {
+		// Receives an object consisting of keys 'blockA', 'blockB', 'blockC', and 'blockD' with the value of their row and col coords in "2 4" format 
+		// 		representing x = 2, y = 4
+		for (let i = 0; i < blocks.length; i++) {
+			let xyPos = coordArr[i].split(" ")
+			this.matrixArray[xyPos[1]][xyPos[0]] = blocks[i]
+		}
+	}
 
 }
