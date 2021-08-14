@@ -38,7 +38,7 @@ const game = {
 
 			// TODO: Only occur if all of the above has finished, and ready for new piece
 			if (this.readyForNewPiece) {
-				this.currentPiece = new jPiece()
+				this.currentPiece = new tPiece()
 				this.readyForNewPiece = false
 			}
 
@@ -81,7 +81,9 @@ const game = {
 		} else if (this.controls.right === 1) {
 			// this.currentPiece.positionX++
 			this.currentPiece.moveDirection("right", this.stack)
-		}	
+		} else if (this.controls.down === 1) {
+			this.currentPiece.moveDirection("down", this.stack)
+		}
 	},
 	drawStack() {
 		this.stack.forMatrix((value, row, col)=>{

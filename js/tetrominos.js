@@ -50,7 +50,7 @@ class Tetromino {
 		}
 
 		if (dir === "down") {
-			movementDelta = -1
+			movementDelta = 1
 			noCollisions = this.checkCollisionsAfterMove("vertical", movementDelta, stack)
 		} else {
 			noCollisions = this.checkCollisionsAfterMove("horizontal", movementDelta, stack)
@@ -62,7 +62,8 @@ class Tetromino {
 			this.positionX += movementDelta
 			this.updateBlockPositions(movementDelta, "x")
 		} else if (noCollisions && dir === "down") {
-			// TODO: CODE FOR SOFT DROP / LOCK
+			this.positionY += movementDelta
+			this.updateBlockPositions(movementDelta, "y")
 		} else if (dir === "up") {
 			// TODO: CODE FOR SONIC DROP
 		}
@@ -78,14 +79,18 @@ class Tetromino {
 				this.blockArr.forEach((block) => {
 					let newX = block.posX + delta
 					let newY = block.posY
-					console.log("x", newX, "y", newY)
 					noCollisions = noCollisions && (newX >= 0 && newX < 10) 				// Checks left and right walls
 					noCollisions = noCollisions && !(stack.matrixArray[newY][newX] instanceof Block)	// Checks if there's a block where it wants to move to
 				})
 				
 				break
 			case "vertical":
-				// TODO: IMPLEMENT SOFT AND SONIC DROPS
+				this.blockArr.forEach((block) => {
+					let newX = block.posX
+					let newY = block.posY + delta
+					noCollisions = noCollisions && newY < 22 				// Checks if beyond floor
+					noCollisions = noCollisions && !(stack.matrixArray[newY][newX] instanceof Block)	// Checks if there's a block where it wants to move to
+				})
 				break
 		}
 		return noCollisions
