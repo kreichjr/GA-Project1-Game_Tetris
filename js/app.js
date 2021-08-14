@@ -27,7 +27,7 @@ const game = {
 		document.querySelector("button").style.display = "none"
 	},
 	createStack() {
-		this.stack = new Matrix(20, 10)
+		this.stack = new Matrix(22, 10)
 		this.stack.createWellDivs()
 	},
 	initGameLoop() {

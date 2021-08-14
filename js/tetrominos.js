@@ -205,7 +205,7 @@ rotateCW(stack) {
 
 class iPiece extends Tetromino {
 	constructor() {
-		super("i-piece", "red", 3, 0)
+		super("i-piece", "red", 3, 1)
 		
 		this.orientations = 
 			[
@@ -262,7 +262,7 @@ class iPiece extends Tetromino {
 
 class sPiece extends Tetromino {
 	constructor() {
-		super("s-piece", "purple", 3, 0)
+		super("s-piece", "purple", 3, 1)
 		
 		this.orientations = 
 			[
@@ -279,7 +279,7 @@ class sPiece extends Tetromino {
 
 class zPiece extends Tetromino {
 	constructor() {
-		super("z-piece", "green", 3, 0)
+		super("z-piece", "green", 3, 1)
 		
 		this.orientations = 
 			[
@@ -296,7 +296,7 @@ class zPiece extends Tetromino {
 
 class tPiece extends Tetromino {
 	constructor() {
-		super("t-piece", "teal", 3, 0)
+		super("t-piece", "teal", 3, 1)
 		
 		this.orientations = 
 			[
@@ -317,7 +317,7 @@ class tPiece extends Tetromino {
 
 class lPiece extends Tetromino {
 	constructor() {
-		super("l-piece", "orange", 3, 0)
+		super("l-piece", "orange", 3, 1)
 		
 		this.orientations = 
 			[
@@ -338,7 +338,7 @@ class lPiece extends Tetromino {
 
 class jPiece extends Tetromino {
 	constructor() {
-		super("j-piece", "blue", 3, 0)
+		super("j-piece", "blue", 3, 1)
 		
 		this.orientations = 
 			[
@@ -359,7 +359,7 @@ class jPiece extends Tetromino {
 
 class oPiece extends Tetromino {
 	constructor() {
-		super("o-piece", "yellow", 3, 0)
+		super("o-piece", "yellow", 3, 1)
 		
 		this.orientations = 
 			[
