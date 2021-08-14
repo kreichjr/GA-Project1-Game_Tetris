@@ -66,8 +66,10 @@ class Tetromino {
 			this.updateBlockPositions(movementDelta, "y")
 		} else if (dir === "up") {
 			// TODO: CODE FOR SONIC DROP
+		} else if (!noCollisions && dir === "down") {
+			game.setLockPieceFlag()
 		}
-		// TODO: IMPLEMENT WALLKICKS
+		
 
 	}
 
@@ -103,7 +105,8 @@ class Tetromino {
 			let realX = this.positionX + item.x + delta
 			let realY = this.positionY + item.y
 			validRotate = validRotate && 
-							(realX >= 0 && realX < 10) && 
+							(realX >= 0 && realX < 10) &&
+							(realY < 22) &&
 							!(stack.matrixArray[realY][realX] instanceof Block)   // checks for overlapping block on stack	
 		})
 
@@ -386,5 +389,45 @@ class oPiece extends Tetromino {
 	}
 }
 
+class RandomPiece {
+	constructor() {
+		this.listOfPieces = [iPiece, oPiece, tPiece, sPiece, zPiece, lPiece, jPiece]
+		this.pieceHistory = [zPiece, sPiece, sPiece, zPiece]
+		this.firstPieceSelected = false
+	}
+	getNextPiece() {
+		let newPiece = null
+		let retryCounter = 0
+		while (!newPiece) {
+			newPiece = this.listOfPieces[Math.floor(Math.random() * this.listOfPieces.length)]
+			if (!this.firstPieceSelected) {
+				if (newPiece === oPiece || newPiece === sPiece || newPiece === zPiece) {
+					newPiece = null
+					continue
+				} else {
+					this.firstPieceSelected = true
+					return this.returnPieceAndUpdateHistory(newPiece)
+				}
+			}
 
+			if (this.pieceHistory.indexOf(newPiece) !== -1) {
+				if (retryCounter === 5) {
+					return this.returnPieceAndUpdateHistory(newPiece)
+				} else {
+					newPiece = null
+					retryCounter++
+					continue
+				}
+			}
+
+			return this.returnPieceAndUpdateHistory(newPiece)
+		}
+	}
+	returnPieceAndUpdateHistory(newPiece) {
+		this.pieceHistory.shift()
+		this.pieceHistory.push(newPiece)
+
+		return new newPiece()
+	}
+}
 

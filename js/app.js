@@ -3,10 +3,16 @@ console.log("Tetris Project")
 const game = {
 	stack: null,
 	controls: new InputHandler(),
+	randomizer: new RandomPiece(),
 	currentPiece: null,
 	nextPiece: null,
 	gameLoop: null,
 	readyForNewPiece: true,
+	readyToLockPiece: false,
+	AREActive: false,
+	DASActive: false,
+	lockDelayActive: false,
+	lineClearActive: false,
 	ARE: 30,
 	DAS: 14,
 	lockDelay: 30,
@@ -37,24 +43,25 @@ const game = {
 			// TODO: Check if delay between next piece 
 
 			// TODO: Only occur if all of the above has finished, and ready for new piece
-			if (this.readyForNewPiece) {
-				this.currentPiece = new tPiece()
-				this.readyForNewPiece = false
+			if (!this.AREActive && !this.lockDelayActive && !this.lineClearActive) {
+				if (this.readyForNewPiece) {
+					this.currentPiece = this.randomizer.getNextPiece()
+					this.readyForNewPiece = false
+				}
+
+				
+				this.moveTetromino()
+				
+				this.rotateTetromino()
+				// TODO: Check gravity for downwards movement
+
+				
+
+				// TODO: Set flags for lock delay, line clear delay if applicable
+
+
+				// console.log("Inside the game loop")
 			}
-
-			// TODO: Check for user input -- Direction
-			this.moveTetromino()
-			// TODO: Check for user input -- Rotation
-			this.rotateTetromino()
-			// TODO: Check gravity for downwards movement
-
-			// TODO: Make lock boolean to determine if lock needs to happen and perform
-
-			// TODO: Set flags for lock delay, line clear delay if applicable
-
-
-			// console.log("Inside the game loop")
-
 			game.drawBoard()	
 			
 		}, 1000/60)
@@ -85,9 +92,12 @@ const game = {
 			this.currentPiece.moveDirection("down", this.stack)
 		}
 	},
+	setLockPieceFlag() {
+		this.readyToLockPiece = true
+	},
 	drawStack() {
 		this.stack.forMatrix((value, row, col)=>{
-			document.querySelector(`#row${row}col${col}`).setAttribute("class","cell has-block")
+			document.querySelector(`#row${row}col${col}`).setAttribute("class","cell")
 		})
 	},
 	drawBoard() {
