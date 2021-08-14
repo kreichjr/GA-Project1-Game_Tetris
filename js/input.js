@@ -7,6 +7,9 @@ class InputHandler {
 		this.A = 0
 		this.B = 0
 		this.C = 0
+		this.inputAConsumed = false
+		this.inputBConsumed = false
+		this.inputCConsumed = false
 	}
 
 	keydownHandler(event) {
@@ -45,6 +48,7 @@ class InputHandler {
 			case "Period":
 				// Button C - CCW Rotation
 				this.C = 1
+				break
 		}
 
 	}
@@ -70,14 +74,18 @@ class InputHandler {
 			case "KeyM":
 				// Button A - CCW rotation
 				this.A = 0
+				this.inputAConsumed = false
 				break
 			case "Comma":
 				// Button B - CW Rotation
 				this.B = 0
+				this.inputBConsumed = false
 				break
 			case "Period":
 				// Button C - CCW Rotation
 				this.C = 0
+				this.inputCConsumed = false
+				break
 		}
 	}
 }

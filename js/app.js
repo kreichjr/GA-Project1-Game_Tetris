@@ -38,13 +38,14 @@ const game = {
 
 			// TODO: Only occur if all of the above has finished, and ready for new piece
 			if (this.readyForNewPiece) {
-				this.currentPiece = new iPiece()
+				this.currentPiece = new jPiece()
 				this.readyForNewPiece = false
 			}
 
-			// TODO: Check for user input -- Rotation
 			// TODO: Check for user input -- Direction
 			this.moveTetromino()
+			// TODO: Check for user input -- Rotation
+			this.rotateTetromino()
 			// TODO: Check gravity for downwards movement
 
 			// TODO: Make lock boolean to determine if lock needs to happen and perform
@@ -58,6 +59,21 @@ const game = {
 			
 		}, 1000/60)
 	},
+	rotateTetromino() {
+		if (this.controls.A === 1 && this.controls.inputAConsumed === false) {
+			this.controls.inputAConsumed = true
+			this.currentPiece.rotateCCW(this.stack)
+			this.currentPiece.setBlockPositions()
+		} else if (this.controls.B === 1 && this.controls.inputBConsumed === false) {
+			this.controls.inputBConsumed = true
+			this.currentPiece.rotateCW(this.stack)
+			this.currentPiece.setBlockPositions()
+		} else if (this.controls.C === 1 && this.controls.inputCConsumed === false) {
+			this.controls.inputCConsumed = true
+			this.currentPiece.rotateCCW(this.stack)
+			this.currentPiece.setBlockPositions()
+		}
+	},
 	moveTetromino() {
 		if (this.controls.left === 1) {
 			// this.currentPiece.positionX--
@@ -65,13 +81,11 @@ const game = {
 		} else if (this.controls.right === 1) {
 			// this.currentPiece.positionX++
 			this.currentPiece.moveDirection("right", this.stack)
-		}
-
-		// TODO: CHECK FOR COLLISION AND UNDO MOVE 
+		}	
 	},
 	drawStack() {
 		this.stack.forMatrix((value, row, col)=>{
-			document.querySelector(`#row${row}col${col}`).setAttribute("class","cell")
+			document.querySelector(`#row${row}col${col}`).setAttribute("class","cell has-block")
 		})
 	},
 	drawBoard() {
@@ -79,12 +93,6 @@ const game = {
 		this.drawCurrentTetromino()
 	},
 	drawCurrentTetromino() {
-		// let tetroX = this.currentPiece.positionX
-		// let tetroY = this.currentPiece.positionY
-		// let blockPositions = this.currentPiece.getBlockRelativePositions()
-		// blockPositions.forEach((val)=>{
-		// 	let realX = tetroX + val.x
-		// 	let realY = tetroY + val.y
 		this.currentPiece.blockArr.forEach((block)=>{
 			document.querySelector(`#row${block.posY}col${block.posX}`).classList.add(`has-block`, `${this.currentPiece.type}`)
 		})	
@@ -103,6 +111,8 @@ const game = {
 				"KeyB", "KeyA", "Enter"]
 		this.inputBuffer.shift()
 		this.inputBuffer.push(event.code)
+		// TODO: NEED A NEW EASTER EGG/CODE
+
 		// if (game._arrayEquals(konamiCode, this.inputBuffer)) {
 		// 	this.music.init()
 		// }
