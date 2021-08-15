@@ -371,10 +371,10 @@ class oPiece extends Tetromino {
 		
 		this.orientations = 
 			[
-				new Matrix(2, 2)				
+				new Matrix(3, 3)				
 			]
 		
-		this.orientations[0].setBlocks(this.blockArr, ["0 0", "0 1", "1 0", "1 1"])
+		this.orientations[0].setBlocks(this.blockArr, ["1 1", "1 2", "2 1", "2 2"])
 		
 
 		this.setBlockPositions()

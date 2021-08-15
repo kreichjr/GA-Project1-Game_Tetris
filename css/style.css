@@ -27,11 +27,25 @@ button {
 
 #left-edge {
 	position: absolute;
-	width: 25px;
+	width: 30px;
 	height: 600px;
-	left: 0;
+	left: -5px;
 	top: 60px;
 	background: linear-gradient(0.75turn, #3f87a6, #ebf8e1, #405060);
+}
+
+#left-edge:before {
+  background: inherit;
+  top: -30px;
+  content: '';
+  display: block;
+  height: 50%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  transform: skewY(45deg);
+  transform-origin: 0;
+  z-index: -1;
 }
 
 #left-edge:after {
@@ -51,11 +65,25 @@ button {
 
 #right-edge {
 	position: absolute;
-	width: 25px;
+	width: 30px;
 	height: 600px;
-	right: 0;
+	right: -5px;
 	top: 60px;
 	background: linear-gradient(0.25turn, #3f87a6, #ebf8e1, #405060);
+}
+
+#right-edge:before {
+  background: inherit;
+  top: -30px;
+  content: '';
+  display: block;
+  height: 50%;
+  left: 0;
+  position: absolute;
+  right: 0;
+  transform: skewY(-45deg);
+  transform-origin: 100%;
+  z-index: -1;
 }
 
 #right-edge:after {
@@ -74,10 +102,21 @@ button {
 
 #bottom-edge {
 	position: absolute;
-	width: 361px;
-	height: 25px;
-	bottom: -40px;
+	width: 371px;
+	height: 30px;
+	left: -5px;
+	bottom: -46px;
 	background: linear-gradient(0.50turn, #3f87a6, #ebf8e1, #405060);
+	z-index: -10;
+}
+
+#top-edge {
+	position: absolute;
+	width: 371px;
+	height: 30px;
+	left:  -5px;
+	top: 30px;
+	background: linear-gradient(0turn, #3f87a6, #ebf8e1, #405060);
 	z-index: -10;
 }
 
@@ -87,12 +126,35 @@ button {
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: row;
+	position: relative;
+
+}
+
+#preview-container {
+	width: 361px;
+	height: 62px;
+	position: absolute;
+	display: flex;
+	justify-content: center;
+
+
+}
+
+#preview-area {
+	width: 124px;
+	height: 62px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	position: absolute;
+	top: -31px;
 }
 
 .cell {
 	width: 30px;
 	height: 30px;
 	border-radius: 3px;
+	z-index: -11;
 }
 
 .has-block {

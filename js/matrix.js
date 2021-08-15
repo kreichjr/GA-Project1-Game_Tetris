@@ -20,6 +20,16 @@ class Matrix {
 
 		})
 	}
+	createPreviewDivs() {
+		this.forMatrix((value, row, col)=>{
+			const newDiv = document.createElement('div')
+			newDiv.classList.add("cell")
+			// newDiv.classList.add("has-block")  // Used to debug and confirm cells are in correct spot
+			newDiv.setAttribute("id",`preview-row${row}col${col}`)
+			document.querySelector("#preview-area").append(newDiv)
+
+		})
+	}
 	forMatrix(callback) {
 		this.matrixArray.forEach((arr, row)=>{
 			arr.forEach((value, col)=>{

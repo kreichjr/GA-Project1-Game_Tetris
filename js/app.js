@@ -2,6 +2,7 @@ console.log("Tetris Project")
 
 const game = {
 	stack: null,
+	preview: null,
 	controls: new InputHandler(),
 	randomizer: new RandomPiece(),
 	currentPiece: null,
@@ -27,10 +28,16 @@ const game = {
 	start() {
 		this._hideStartButton()
 		this.createStack()
+		this.createPreview()
+		this.nextPiece = this.randomizer.getNextPiece()
 		this.initGameLoop()
 	},
 	_hideStartButton() {
 		document.querySelector("button").style.display = "none"
+	},
+	createPreview() {
+		this.preview = new Matrix(2, 4)
+		this.preview.createPreviewDivs()
 	},
 	createStack() {
 		this.stack = new Matrix(22, 10)
@@ -45,7 +52,8 @@ const game = {
 			// TODO: Only occur if all of the above has finished, and ready for new piece
 			if (!this.AREActive && !this.lockDelayActive && !this.lineClearActive) {
 				if (this.readyForNewPiece) {
-					this.currentPiece = this.randomizer.getNextPiece()
+					this.currentPiece = this.nextPiece
+					this.nextPiece = this.randomizer.getNextPiece()
 					this.readyForNewPiece = false
 				}
 
@@ -97,12 +105,22 @@ const game = {
 	},
 	drawStack() {
 		this.stack.forMatrix((value, row, col)=>{
-			document.querySelector(`#row${row}col${col}`).setAttribute("class","cell")
+			document.querySelector(`#play-area #row${row}col${col}`).setAttribute("class","cell")
 		})
 	},
 	drawBoard() {
 		this.drawStack()
+		this.drawPreview()
 		this.drawCurrentTetromino()
+	},
+	drawPreview() {
+		this.nextPiece.blockArr.forEach((block)=>{
+			
+			let realX = block.posX + block.previewPosXOffset
+			let realY = block.posY + block.previewPosYOffset
+			console.log(`${realX}, ${realY}`)
+			document.querySelector(`#preview-row${realY}col${realX}`).classList.add(`has-block`, `${this.nextPiece.type}`)
+		})
 	},
 	drawCurrentTetromino() {
 		this.currentPiece.blockArr.forEach((block)=>{
