@@ -92,16 +92,13 @@ const game = {
 	moveTetromino() {
 		if (this.controls.left === 1) {
 			// this.currentPiece.positionX--
-			this.currentPiece.moveDirection("left", this.stack)
+			this.currentPiece.moveDirection(-1, this.stack)
 		} else if (this.controls.right === 1) {
 			// this.currentPiece.positionX++
-			this.currentPiece.moveDirection("right", this.stack)
+			this.currentPiece.moveDirection(1, this.stack)
 		} else if (this.controls.down === 1) {
-			this.currentPiece.moveDirection("down", this.stack)
+			this.readyToLockPiece = this.currentPiece.moveDownAndLockCheck(this.stack)
 		}
-	},
-	setLockPieceFlag() {
-		this.readyToLockPiece = true
 	},
 	drawStack() {
 		this.stack.forMatrix((value, row, col)=>{
@@ -118,7 +115,7 @@ const game = {
 			
 			let realX = block.posX + block.previewPosXOffset
 			let realY = block.posY + block.previewPosYOffset
-			console.log(`${realX}, ${realY}`)
+	
 			document.querySelector(`#preview-row${realY}col${realX}`).classList.add(`has-block`, `${this.nextPiece.type}`)
 		})
 	},
@@ -134,7 +131,6 @@ const game = {
     			a.every((val, index) => val === b[index]);
 	},
 	_easterEgg: function(event) {
-		console.log(event) // visual display of capturing key inputs
 		const konamiCode = [
 				"ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", 
 				"ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", 

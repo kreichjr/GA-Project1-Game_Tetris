@@ -39,38 +39,30 @@ class Tetromino {
 	}
 
 	moveDirection(dir, stack) {
-		let movementDelta = 0
+		let movementDelta = dir
 		let noCollisions = null
+
+		noCollisions = this.checkCollisionsAfterMove("horizontal", movementDelta, stack)
 		
-
-		if (dir === "left") {
-			movementDelta = -1
-		} else if (dir === "right") {
-			movementDelta = 1
-		}
-
-		if (dir === "down") {
-			movementDelta = 1
-			noCollisions = this.checkCollisionsAfterMove("vertical", movementDelta, stack)
-		} else {
-			noCollisions = this.checkCollisionsAfterMove("horizontal", movementDelta, stack)
-		}
 		// TODO: IMPLEMENT SOFT AND SONIC DROPS
 		
-		if (noCollisions && (dir === "left" || dir === "right")) {
-
+		if (noCollisions) {
 			this.positionX += movementDelta
 			this.updateBlockPositions(movementDelta, "x")
-		} else if (noCollisions && dir === "down") {
+		}
+	}
+
+	moveDownAndLockCheck(stack) {
+		let movementDelta = 1
+		let noCollisions = this.checkCollisionsAfterMove("vertical", movementDelta, stack)
+
+		if (noCollisions) {
 			this.positionY += movementDelta
 			this.updateBlockPositions(movementDelta, "y")
-		} else if (dir === "up") {
-			// TODO: CODE FOR SONIC DROP
-		} else if (!noCollisions && dir === "down") {
-			game.setLockPieceFlag()
-		}
-		
 
+			return false
+		}
+		return true
 	}
 
 	checkCollisionsAfterMove(dir, delta, stack) {
