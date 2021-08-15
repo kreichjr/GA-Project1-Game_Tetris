@@ -14,13 +14,13 @@ const game = {
 	DASActive: false,
 	lockDelayActive: false,
 	lineClearActive: false,
-	ARE: 30,
-	DAS: 14,
-	lockDelay: 30,
-	lineClear: 41,
+	ARETiming: 30,
+	DASTiming: 14,
+	lockDelayTiming: 30,
+	lineClearTiming: 41,
 	internalGravity: 4,
-	AREcounter: 0,
-	DAScounter: 0,
+	ARECounter: 0,
+	DASCounter: 0,
 	lockDelayCounter: 0,
 	lineClearCounter: 0,
 	gravityCounter: 0,
@@ -90,12 +90,32 @@ const game = {
 		}
 	},
 	moveTetromino() {
+		if (this.controls.DASReset) {
+			// Resets the DAS counter and flags if a key was lifted on the controls
+			this.DASCounter = 0
+			this.controls.DASReset = false
+			this.DASActive = false
+		}
+
+		if (this.DASCounter >= this.DASTiming) {
+			// sets the DASActive flag if the counter has reached the threshhold for DAS
+			this.DASActive = true
+		}
+
 		if (this.controls.left === 1) {
-			// this.currentPiece.positionX--
-			this.currentPiece.moveDirection(-1, this.stack)
+			if (this.DASCounter === 0 || this.DASActive){
+				this.currentPiece.moveDirection(-1, this.stack)
+				this.DASCounter++
+			} else {
+				this.DASCounter++
+			}
 		} else if (this.controls.right === 1) {
-			// this.currentPiece.positionX++
-			this.currentPiece.moveDirection(1, this.stack)
+			if (this.DASCounter === 0 || this.DASActive){
+				this.currentPiece.moveDirection(1, this.stack)
+				this.DASCounter++
+			} else {
+				this.DASCounter++
+			}
 		} else if (this.controls.down === 1) {
 			this.readyToLockPiece = this.currentPiece.moveDownAndLockCheck(this.stack)
 		}
