@@ -51,11 +51,13 @@ const game = {
 			// TODO: Check if delay between next piece 
 
 			// TODO: Only occur if all of the above has finished, and ready for new piece
-			if (!this.AREActive && !this.lockDelayActive && !this.lineClearActive && !this.readyToLockPiece) {
+			if (!this.AREActive && !this.lineClearActive && !this.readyToLockPiece) {
 				if (this.readyForNewPiece) {
 					this.currentPiece = this.nextPiece
 					this.nextPiece = this.randomizer.getNextPiece()
 					this.readyForNewPiece = false
+					this.ARECounter = 0
+					this.lineClearActive = 0
 				}
 
 				
@@ -71,11 +73,24 @@ const game = {
 
 				// console.log("Inside the game loop")
 			} else {
+				if (this.AREActive) {
+					this.ARECounter++
+					if (this.ARECounter > this.ARETiming) {
+						this.AREActive = false
+						this.readyForNewPiece = true
+					}
+				}
 				if (this.readyToLockPiece){
 					this.readyToLockPiece = false
 					this.stack.lockBlocksToStack(this.currentPiece)
-					this.readyForNewPiece = true
+					this.AREActive = true
+					
 				}
+				
+
+
+
+
 			}
 			game.drawBoard()	
 			
