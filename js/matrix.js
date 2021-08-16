@@ -45,5 +45,11 @@ class Matrix {
 			this.matrixArray[xyPos[1]][xyPos[0]] = blocks[i]
 		}
 	}
+	lockBlocksToStack(tetromino) {
+		tetromino.blockArr.forEach((block)=>{
+			this.matrixArray[block.posY][block.posX] = block
+			console.log("Is this working?")
+		})
+	}
 
 }

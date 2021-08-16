@@ -1,7 +1,7 @@
 class Tetromino {
 	constructor(type, color, posX, posY) {
 		this.type = type
-		this.blockArr = [new Block(color), new Block(color), new Block(color), new Block(color)]
+		this.blockArr = [new Block(color, type), new Block(color, type), new Block(color, type), new Block(color, type)]
 		this.positionX = posX
 		this.positionY = posY
 		this.currentOrientation = 0
@@ -106,7 +106,7 @@ class Tetromino {
 	}
 
 
-	rotateCCW(stack) {
+	rotateCCW(stack, DAS) {
 		let wallkickDelta = 0 // -1 is move left one, 0 is no wallkick, 1 is move right once, 2 is move right twice
 		let validWallkick = false
 		let validRotate = true
@@ -119,6 +119,11 @@ class Tetromino {
 			this.currentOrientation--
 		}
 		
+		if (DAS) {
+			validRotate = this.checkCollisionsAfterRotation(stack, -1)
+			if (validRotate) {return}
+		}
+
 		// Check if OOB or overlapping block on stack
 		// if inital rotation is valid, make no changes
 		validRotate = this.checkCollisionsAfterRotation(stack, wallkickDelta)
@@ -154,7 +159,7 @@ class Tetromino {
 		
 	}
 
-rotateCW(stack) {
+rotateCW(stack, DAS) {
 		let wallkickDelta = 0 // -1 is move left one, 0 is no wallkick, 1 is move right once, 2 is move right twice
 		let validWallkick = false
 		let validRotate = true

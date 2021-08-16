@@ -1,6 +1,7 @@
 class Block {
-	constructor(color) {
+	constructor(color, type) {
 		this.color = color
+		this.type = type
 		this.posX = null
 		this.posY = null
 		this.previewPosXOffset = -3

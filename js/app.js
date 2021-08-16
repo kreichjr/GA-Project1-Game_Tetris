@@ -50,7 +50,7 @@ const game = {
 			// TODO: Check if delay between next piece 
 
 			// TODO: Only occur if all of the above has finished, and ready for new piece
-			if (!this.AREActive && !this.lockDelayActive && !this.lineClearActive) {
+			if (!this.AREActive && !this.lockDelayActive && !this.lineClearActive && !this.readyToLockPiece) {
 				if (this.readyForNewPiece) {
 					this.currentPiece = this.nextPiece
 					this.nextPiece = this.randomizer.getNextPiece()
@@ -69,6 +69,12 @@ const game = {
 
 
 				// console.log("Inside the game loop")
+			} else {
+				if (this.readyToLockPiece){
+					this.readyToLockPiece = false
+					this.stack.lockBlocksToStack(this.currentPiece)
+					this.readyForNewPiece = true
+				}
 			}
 			game.drawBoard()	
 			
@@ -77,15 +83,15 @@ const game = {
 	rotateTetromino() {
 		if (this.controls.A === 1 && this.controls.inputAConsumed === false) {
 			this.controls.inputAConsumed = true
-			this.currentPiece.rotateCCW(this.stack)
+			this.currentPiece.rotateCCW(this.stack, this.DASActive)
 			this.currentPiece.setBlockPositions()
 		} else if (this.controls.B === 1 && this.controls.inputBConsumed === false) {
 			this.controls.inputBConsumed = true
-			this.currentPiece.rotateCW(this.stack)
+			this.currentPiece.rotateCW(this.stack, this.DASActive)
 			this.currentPiece.setBlockPositions()
 		} else if (this.controls.C === 1 && this.controls.inputCConsumed === false) {
 			this.controls.inputCConsumed = true
-			this.currentPiece.rotateCCW(this.stack)
+			this.currentPiece.rotateCCW(this.stack, this.DASActive)
 			this.currentPiece.setBlockPositions()
 		}
 	},
@@ -122,7 +128,11 @@ const game = {
 	},
 	drawStack() {
 		this.stack.forMatrix((value, row, col)=>{
-			document.querySelector(`#play-area #row${row}col${col}`).setAttribute("class","cell")
+			if (value instanceof Block) {
+				document.querySelector(`#play-area #row${row}col${col}`).setAttribute("class",`cell has-block ${value.type}`)
+			} else {
+				document.querySelector(`#play-area #row${row}col${col}`).setAttribute("class","cell")
+			}
 		})
 	},
 	drawBoard() {
