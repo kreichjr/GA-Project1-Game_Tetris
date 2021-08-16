@@ -10,6 +10,7 @@ const game = {
 	gameLoop: null,
 	readyForNewPiece: true,
 	readyToLockPiece: false,
+	DASDirection: null,
 	AREActive: false,
 	DASActive: false,
 	lockDelayActive: false,
@@ -83,15 +84,15 @@ const game = {
 	rotateTetromino() {
 		if (this.controls.A === 1 && this.controls.inputAConsumed === false) {
 			this.controls.inputAConsumed = true
-			this.currentPiece.rotateCCW(this.stack, this.DASActive)
+			this.currentPiece.rotateCCW(this.stack, this.DASActive, this.DASDirection)
 			this.currentPiece.setBlockPositions()
 		} else if (this.controls.B === 1 && this.controls.inputBConsumed === false) {
 			this.controls.inputBConsumed = true
-			this.currentPiece.rotateCW(this.stack, this.DASActive)
+			this.currentPiece.rotateCW(this.stack, this.DASActive, this.DASDirection)
 			this.currentPiece.setBlockPositions()
 		} else if (this.controls.C === 1 && this.controls.inputCConsumed === false) {
 			this.controls.inputCConsumed = true
-			this.currentPiece.rotateCCW(this.stack, this.DASActive)
+			this.currentPiece.rotateCCW(this.stack, this.DASActive, this.DASDirection)
 			this.currentPiece.setBlockPositions()
 		}
 	},
@@ -101,6 +102,7 @@ const game = {
 			this.DASCounter = 0
 			this.controls.DASReset = false
 			this.DASActive = false
+			this.DASDirection = null
 		}
 
 		if (this.DASCounter >= this.DASTiming) {
@@ -112,6 +114,7 @@ const game = {
 			if (this.DASCounter === 0 || this.DASActive){
 				this.currentPiece.moveDirection(-1, this.stack)
 				this.DASCounter++
+				this.DASDirection = -1
 			} else {
 				this.DASCounter++
 			}
@@ -119,6 +122,7 @@ const game = {
 			if (this.DASCounter === 0 || this.DASActive){
 				this.currentPiece.moveDirection(1, this.stack)
 				this.DASCounter++
+				this.DASDirection = 1
 			} else {
 				this.DASCounter++
 			}
@@ -141,6 +145,10 @@ const game = {
 		this.drawCurrentTetromino()
 	},
 	drawPreview() {
+		this.preview.forMatrix((value, row, col)=>{
+			document.querySelector(`#preview-row${row}col${col}`).setAttribute("class","cell")
+		})
+
 		this.nextPiece.blockArr.forEach((block)=>{
 			
 			let realX = block.posX + block.previewPosXOffset

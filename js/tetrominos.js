@@ -106,7 +106,7 @@ class Tetromino {
 	}
 
 
-	rotateCCW(stack, DAS) {
+	rotateCCW(stack, DAS, DASDir) {
 		let wallkickDelta = 0 // -1 is move left one, 0 is no wallkick, 1 is move right once, 2 is move right twice
 		let validWallkick = false
 		let validRotate = true
@@ -120,7 +120,7 @@ class Tetromino {
 		}
 		
 		if (DAS) {
-			validRotate = this.checkCollisionsAfterRotation(stack, -1)
+			validRotate = this.checkCollisionsAfterRotation(stack, DASDir)
 			if (validRotate) {return}
 		}
 
@@ -159,7 +159,7 @@ class Tetromino {
 		
 	}
 
-rotateCW(stack, DAS) {
+rotateCW(stack, DAS, DASDir) {
 		let wallkickDelta = 0 // -1 is move left one, 0 is no wallkick, 1 is move right once, 2 is move right twice
 		let validWallkick = false
 		let validRotate = true
@@ -172,6 +172,11 @@ rotateCW(stack, DAS) {
 			this.currentOrientation++
 		}
 		
+		if (DAS) {
+			validRotate = this.checkCollisionsAfterRotation(stack, DASDir)
+			if (validRotate) {return}
+		}
+
 		// Check if OOB or overlapping block on stack
 		// if inital rotation is valid, make no changes
 		validRotate = this.checkCollisionsAfterRotation(stack, wallkickDelta)
