@@ -10,6 +10,7 @@ const game = {
 	gameLoop: null,
 	readyForNewPiece: true,
 	readyToLockPiece: false,
+	currentPieceActive: true,
 	DASDirection: null,
 	AREActive: false,
 	DASActive: false,
@@ -56,12 +57,13 @@ const game = {
 					this.currentPiece = this.nextPiece
 					this.nextPiece = this.randomizer.getNextPiece()
 					this.readyForNewPiece = false
+					this.currentPieceActive = true
 					this.ARECounter = 0
 					this.lineClearActive = 0
 				}
 
 				
-				this.moveTetromino()
+				this.chargeDAS()
 				
 				this.rotateTetromino()
 				// TODO: Check gravity for downwards movement
@@ -84,9 +86,10 @@ const game = {
 					this.readyToLockPiece = false
 					this.stack.lockBlocksToStack(this.currentPiece)
 					this.AREActive = true
+					this.currentPieceActive = false
 					
 				}
-				
+				this.chargeDAS()
 
 
 
@@ -111,7 +114,7 @@ const game = {
 			this.currentPiece.setBlockPositions()
 		}
 	},
-	moveTetromino() {
+	chargeDAS() {
 		if (this.controls.DASReset) {
 			// Resets the DAS counter and flags if a key was lifted on the controls
 			this.DASCounter = 0
@@ -127,7 +130,7 @@ const game = {
 
 		if (this.controls.left === 1) {
 			if (this.DASCounter === 0 || this.DASActive){
-				this.currentPiece.moveDirection(-1, this.stack)
+				this.moveTetromino()
 				this.DASCounter++
 				this.DASDirection = -1
 			} else {
@@ -135,14 +138,23 @@ const game = {
 			}
 		} else if (this.controls.right === 1) {
 			if (this.DASCounter === 0 || this.DASActive){
-				this.currentPiece.moveDirection(1, this.stack)
+				this.moveTetromino()
 				this.DASCounter++
 				this.DASDirection = 1
 			} else {
 				this.DASCounter++
 			}
-		} else if (this.controls.down === 1) {
+		} else if (this.controls.down === 1 && !this.AREActive && !this.lockDelayActive) {
 			this.readyToLockPiece = this.currentPiece.moveDownAndLockCheck(this.stack)
+		} else if (this.controls.up === 1 && !this.AREActive && !this.lockDelayActive) {
+			this.currentPiece.moveDownXAmount(this.stack, 20)
+		}
+	},
+	moveTetromino() {
+		if (this.controls.left === 1 && this.currentPieceActive) {
+			this.currentPiece.moveDirection(-1, this.stack)
+		} else if (this.controls.right === 1 && this.currentPieceActive) {
+			this.currentPiece.moveDirection(1, this.stack)
 		}
 	},
 	drawStack() {

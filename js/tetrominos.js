@@ -65,6 +65,33 @@ class Tetromino {
 		return true
 	}
 
+	moveDownXAmount(stack, distance) {
+		let validFallDistance = 0
+		
+
+		for (let i = 1; i <= distance; i++) {
+			let validMove = true
+			this.blockArr.forEach((block)=>{
+				let curX = block.posX
+				let newY = block.posY + i
+				console.log({x: curX, y: newY})
+				if (newY > 21) {
+					validMove = false
+				} else {
+					validMove = validMove && !(stack.matrixArray[newY][curX] instanceof Block)
+				}
+			})
+			if (validMove) {
+				validFallDistance++
+			} else {
+				break
+			}
+		}
+
+		this.positionY += validFallDistance
+		this.updateBlockPositions(validFallDistance, "y")
+	}
+
 	checkCollisionsAfterMove(dir, delta, stack) {
 		let noCollisions = true
 		switch (dir) {
