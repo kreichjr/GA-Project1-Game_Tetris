@@ -51,5 +51,17 @@ class Matrix {
 			console.log("Is this working?")
 		})
 	}
-
+	getRowsOfFullLines() {
+		const fullLineRowArray = [] 
+		
+		rowcheck: for (let row = 2; row < this.matrixArray.length; row++) {
+			for (const block of this.matrixArray[row]) {
+				if (!(block instanceof Block)) {
+					continue rowcheck
+				}
+			}
+			fullLineRowArray.push(row)
+		}
+		return fullLineRowArray
+	}
 }

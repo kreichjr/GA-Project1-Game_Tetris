@@ -60,20 +60,24 @@ const game = {
 					this.currentPieceActive = true
 					this.ARECounter = 0
 					this.lineClearActive = 0
+					if (this.controls.A === 1 && this.inputAConsumed === false) {
+						this.inputAConsumed = true
+						this.currentPiece.IRS(-1)
+					} else if (this.controls.B === 1 && this.inputBConsumed === false) {
+						this.inputBConsumed = true
+						this.currentPiece.IRS(1)
+					} else if (this.controls.C === 1 && this.inputCConsumed === false) {
+						this.inputCConsumed = true
+						this.currentPiece.IRS(-1)
+					}
 				}
 
+				// TODO: Check gravity for downwards movement
 				
 				this.chargeDAS()
-				
 				this.rotateTetromino()
-				// TODO: Check gravity for downwards movement
-
-				
-
-				// TODO: Set flags for lock delay, line clear delay if applicable
 
 
-				// console.log("Inside the game loop")
 			} else {
 				if (this.AREActive) {
 					this.ARECounter++
@@ -85,15 +89,11 @@ const game = {
 				if (this.readyToLockPiece){
 					this.readyToLockPiece = false
 					this.stack.lockBlocksToStack(this.currentPiece)
+					console.log(this.stack.getRowsOfFullLines())
 					this.AREActive = true
 					this.currentPieceActive = false
-					
 				}
 				this.chargeDAS()
-
-
-
-
 			}
 			game.drawBoard()	
 			
@@ -105,9 +105,9 @@ const game = {
 			this.currentPiece.rotateCCW(this.stack, this.DASActive, this.DASDirection)
 			this.currentPiece.setBlockPositions()
 		} else if (this.controls.B === 1 && this.controls.inputBConsumed === false) {
-			this.controls.inputBConsumed = true
-			this.currentPiece.rotateCW(this.stack, this.DASActive, this.DASDirection)
-			this.currentPiece.setBlockPositions()
+		    this.controls.inputBConsumed = true
+		    this.currentPiece.rotateCW(this.stack, this.DASActive, this.DASDirection)
+		    this.currentPiece.setBlockPositions()
 		} else if (this.controls.C === 1 && this.controls.inputCConsumed === false) {
 			this.controls.inputCConsumed = true
 			this.currentPiece.rotateCCW(this.stack, this.DASActive, this.DASDirection)
