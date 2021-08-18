@@ -22,11 +22,13 @@ class InputHandler {
 				// Input Left - update right to prevent two opposite keys at once
 				this.left = 1
 				this.right = 0
+				this.DASReset = true
 				break
 			case "KeyD":
 				// Input Right - update left to prevent two opposite keys at once
 				this.right = 1
 				this.left = 0
+				this.DASReset = true
 				break
 			case "KeyW":
 				// Input Up - Used for sonic drop
