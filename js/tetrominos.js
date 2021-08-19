@@ -74,7 +74,7 @@ class Tetromino {
 			this.blockArr.forEach((block)=>{
 				let curX = block.posX
 				let newY = block.posY + i
-				console.log({x: curX, y: newY})
+				
 				if (newY > 21) {
 					validMove = false
 				} else {
@@ -130,6 +130,16 @@ class Tetromino {
 		})
 
 		return validRotate
+	}
+
+	IRS(rotationDelta) {
+		this.currentOrientation += rotationDelta
+		if (this.currentOrientation < 0) {
+			this.currentOrientation = this.orientations.length - 1
+		} else if (this.currentOrientation >= this.orientations.length) {
+			this.currentOrientation = 0
+		}
+		this.setBlockPositions()
 	}
 
 

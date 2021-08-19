@@ -1,3 +1,7 @@
+:root {
+	--transition-time: .7s;
+}
+
 * {
 	margin: 0 auto;
 }
@@ -187,6 +191,109 @@ button {
 
 .o-piece {
 	background: yellow;
+}
+
+.break0 {
+	animation: break0 var(--transition-time) ease forwards;
+	opacity: 1;
+	z-index: 20;
+}
+.break1 {
+	animation: break1 var(--transition-time) ease forwards;
+	opacity: 1;
+	z-index: 20;
+}
+.break2 {
+	animation: break2 var(--transition-time) ease forwards;
+	opacity: 1;
+	z-index: 20;
+}
+.break3 {
+	animation: break3 var(--transition-time) ease forwards;
+	opacity: 1;
+	z-index: 20;
+}
+.break4 {
+	animation: break4 var(--transition-time) ease forwards;
+	opacity: 1;
+	z-index: 20;
+}
+.break5 {
+	animation: break5 var(--transition-time) ease forwards;
+	opacity: 1;
+	z-index: 20;
+}
+.break6 {
+	animation: break6 var(--transition-time) ease forwards;
+	opacity: 1;
+	z-index: 20;
+}
+.break7 {
+	animation: break7 var(--transition-time) ease forwards;
+	opacity: 1;
+	z-index: 20;
+}
+.break8 {
+	animation: break8 var(--transition-time) ease forwards;
+	opacity: 1;
+	z-index: 20;
+}
+.break9 {
+	animation: break9 var(--transition-time) ease forwards;
+	opacity: 1;
+	z-index: 20;
+}
+
+
+@keyframes break0 {
+	25% {transform: translate(-25px, -15px) rotate(-150deg); opacity: 1}
+	50% {opacity: .4}
+	100% {transform: translate(-100px, 150px) rotate(-450deg); opacity: 0;}
+}
+@keyframes break1 {
+	25% {transform: translate(-20px, -15px) rotate(-120deg); opacity: 1}
+	50% {opacity: .4}
+	100% {transform: translate(-80px, 150px) rotate(-360deg); opacity: 0;}
+}
+@keyframes break2 {
+	25% {transform: translate(-15px, -15px) rotate(-90deg); opacity: 1}
+	50% {opacity: .4}
+	100% {transform: translate(-60px, 150px) rotate(-270deg); opacity: 0;}
+}
+@keyframes break3 {
+	25% {transform: translate(-10px, -15px) rotate(-60deg); opacity: 1}
+	50% {opacity: .4}
+	100% {transform: translate(-40px, 150px) rotate(-180deg); opacity: 0;}
+}
+@keyframes break4 {
+	25% {transform: translate(-5px, -15px) rotate(-30deg); opacity: 1}
+	50% {opacity: .4}
+	100% {transform: translate(-20px, 150px) rotate(-90deg); opacity: 0;}
+}
+@keyframes break5 {
+	25% {transform: translate(5px, -15px) rotate(30deg); opacity: 1}
+	50% {opacity: .4}
+	100% {transform: translate(20px, 150px) rotate(90deg); opacity: 0;}
+}
+@keyframes break6 {
+	25% {transform: translate(10px, -15px) rotate(60deg); opacity: 1}
+	50% {opacity: .4}
+	100% {transform: translate(40px, 150px) rotate(180deg); opacity: 0;}
+}
+@keyframes break7 {
+	25% {transform: translate(15px, -15px) rotate(90deg); opacity: 1}
+	50% {opacity: .4}
+	100% {transform: translate(60px, 150px) rotate(270deg); opacity: 0;}
+}
+@keyframes break8 {
+	25% {transform: translate(20px, -15px) rotate(120deg); opacity: 1}
+	50% {opacity: .4}
+	100% {transform: translate(80px, 150px) rotate(360deg); opacity: 0;}
+}
+@keyframes break9 {
+	25% {transform: translate(25px, -15px) rotate(150deg); opacity: 1}
+	50% {opacity: .4}
+	100% {transform: translate(100px, 150px) rotate(450deg); opacity: 0;}
 }
 
 

@@ -8,6 +8,7 @@ const game = {
 	currentPiece: null,
 	nextPiece: null,
 	gameLoop: null,
+	completedLinesArray: null,
 	readyForNewPiece: true,
 	readyToLockPiece: false,
 	currentPieceActive: true,
@@ -59,7 +60,7 @@ const game = {
 					this.readyForNewPiece = false
 					this.currentPieceActive = true
 					this.ARECounter = 0
-					this.lineClearActive = 0
+					this.lineClearCounter = 0
 					if (this.controls.A === 1 && this.inputAConsumed === false) {
 						this.inputAConsumed = true
 						this.currentPiece.IRS(-1)
@@ -86,11 +87,27 @@ const game = {
 						this.readyForNewPiece = true
 					}
 				}
+				if (this.lineClearActive) {
+					this.lineClearCounter++
+					if (this.lineClearCounter > this.lineClearTiming) {
+						this.lineClearActive = false
+						this.stack.clearLines(this.completedLinesArray)
+						this.readyForNewPiece = true
+					}
+				}
 				if (this.readyToLockPiece){
 					this.readyToLockPiece = false
 					this.stack.lockBlocksToStack(this.currentPiece)
-					console.log(this.stack.getRowsOfFullLines())
-					this.AREActive = true
+					
+					this.completedLinesArray = this.stack.getRowsOfFullLines()
+
+					if (this.completedLinesArray.length === 0) {
+						this.AREActive = true
+					} else {
+						this.lineClearActive = true
+						this.stack.animateClearLines(this.completedLinesArray)
+					}
+					
 					this.currentPieceActive = false
 				}
 				this.chargeDAS()
@@ -160,7 +177,13 @@ const game = {
 	drawStack() {
 		this.stack.forMatrix((value, row, col)=>{
 			if (value instanceof Block) {
-				document.querySelector(`#play-area #row${row}col${col}`).setAttribute("class",`cell has-block ${value.type}`)
+				if (value.clearFlag && !value.clearTransitionSet) {
+					value.clearTransitionSet = true
+					document.querySelector(`#play-area #row${row}col${col}`).setAttribute("class",`cell has-block ${value.type} break${value.posX}`)
+					console.log(value)
+				} else if (!value.clearFlag) {
+					document.querySelector(`#play-area #row${row}col${col}`).setAttribute("class",`cell has-block ${value.type}`)
+				}
 			} else {
 				document.querySelector(`#play-area #row${row}col${col}`).setAttribute("class","cell")
 			}

@@ -48,7 +48,6 @@ class Matrix {
 	lockBlocksToStack(tetromino) {
 		tetromino.blockArr.forEach((block)=>{
 			this.matrixArray[block.posY][block.posX] = block
-			console.log("Is this working?")
 		})
 	}
 	getRowsOfFullLines() {
@@ -63,5 +62,23 @@ class Matrix {
 			fullLineRowArray.push(row)
 		}
 		return fullLineRowArray
+	}
+	animateClearLines(lineArr) {
+		console.log(lineArr)
+		for (const rowNum of lineArr) {
+			for (const block of this.matrixArray[rowNum]) {
+				block.clearFlag = true
+			}
+		}
+	}
+	clearLines(lineArr) {
+		let arrLen = lineArr.length
+		for (const destRow of lineArr) {
+			for (let sourceRow = destRow; sourceRow >= 1; sourceRow--) {
+				for (let col = 0; col < 10; col++) {
+					this.matrixArray[sourceRow][col] = this.matrixArray[sourceRow-1][col]
+				}
+			}
+		}
 	}
 }
