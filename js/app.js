@@ -89,15 +89,19 @@ const game = {
 				}
 				if (this.lineClearActive) {
 					this.lineClearCounter++
+					if (this.lineClearCounter === Math.floor(this.lineClearTiming/2)) {
+						this.stack.clearLines(this.completedLinesArray)
+					}
 					if (this.lineClearCounter > this.lineClearTiming) {
 						this.lineClearActive = false
-						this.stack.clearLines(this.completedLinesArray)
+						
 						this.readyForNewPiece = true
 					}
 				}
 				if (this.readyToLockPiece){
 					this.readyToLockPiece = false
 					this.stack.lockBlocksToStack(this.currentPiece)
+
 					
 					this.completedLinesArray = this.stack.getRowsOfFullLines()
 
@@ -106,6 +110,7 @@ const game = {
 					} else {
 						this.lineClearActive = true
 						this.stack.animateClearLines(this.completedLinesArray)
+
 					}
 					
 					this.currentPieceActive = false
@@ -192,7 +197,10 @@ const game = {
 	drawBoard() {
 		this.drawStack()
 		this.drawPreview()
-		this.drawCurrentTetromino()
+		if (this.currentPieceActive) {
+			this.drawCurrentTetromino()
+		}
+		
 	},
 	drawPreview() {
 		this.preview.forMatrix((value, row, col)=>{
