@@ -8,6 +8,10 @@ const game = {
 	currentPiece: null,
 	nextPiece: null,
 	gameLoop: null,
+	endingLoop: null,
+	endingLoopCounter: 0,
+	endingBlockCount: 0,
+	gameIsOver: false,
 	completedLinesArray: null,
 	readyForNewPiece: true,
 	readyToLockPiece: false,
@@ -72,12 +76,17 @@ const game = {
 						this.currentPiece.IRS(-1)
 					}
 				}
-
-				// TODO: Check gravity for downwards movement
-				
-				this.chargeDAS()
-				this.rotateTetromino()
-
+				this.gameIsOver = this.checkForGameOver()
+				if (!this.gameIsOver) {
+					// TODO: Check gravity for downwards movement
+					
+					this.chargeDAS()
+					this.rotateTetromino()
+				} else {
+					clearInterval(this.gameLoop)
+					this.stack.lockBlocksToStack(this.currentPiece)
+					this.startEndingLoop()
+				}
 
 			} else {
 				if (this.AREActive) {
@@ -120,6 +129,34 @@ const game = {
 			game.drawBoard()	
 			
 		}, 1000/60)
+	},
+	startEndingLoop() {
+		this.endingLoop = setInterval(()=>{
+			this.endingLoopCounter++
+
+			if (this.endingLoopCounter % 1 === 0) {
+				this.endingLoopCounter = 0
+				let py = Math.floor(this.endingBlockCount / 10) + 2
+				let px = this.endingBlockCount % 10
+				if (this.stack.matrixArray[py][px] instanceof Block) {
+					document.querySelector(`#row${py}col${px}`).setAttribute("class","cell game-over has-block")
+				} else {
+
+				}
+				this.endingBlockCount++
+			}
+			if (this.endingBlockCount >= 200) {
+				clearInterval(this.endingLoop)
+			}
+		}, 1000/60)
+	},
+	checkForGameOver() {
+		for (const block of this.currentPiece.blockArr) {
+			if (this.stack.matrixArray[block.posY][block.posX] instanceof Block) {
+				return true
+			}
+		}
+		return false
 	},
 	rotateTetromino() {
 		if (this.controls.A === 1 && this.controls.inputAConsumed === false) {
@@ -185,7 +222,6 @@ const game = {
 				if (value.clearFlag && !value.clearTransitionSet) {
 					value.clearTransitionSet = true
 					document.querySelector(`#play-area #row${row}col${col}`).setAttribute("class",`cell has-block ${value.type} break${value.posX}`)
-					console.log(value)
 				} else if (!value.clearFlag) {
 					document.querySelector(`#play-area #row${row}col${col}`).setAttribute("class",`cell has-block ${value.type}`)
 				}

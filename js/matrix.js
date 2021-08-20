@@ -8,7 +8,6 @@ class Matrix {
 			}
 			this.matrixArray.push(rowArray)
 		}
-		// console.log(this.matrixArray)
 	}
 	createWellDivs() {
 		this.forMatrix((value, row, col)=>{
@@ -64,7 +63,6 @@ class Matrix {
 		return fullLineRowArray
 	}
 	animateClearLines(lineArr) {
-		console.log(lineArr)
 		for (const rowNum of lineArr) {
 			for (const block of this.matrixArray[rowNum]) {
 				block.clearFlag = true

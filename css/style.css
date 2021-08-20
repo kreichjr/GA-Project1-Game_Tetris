@@ -193,6 +193,10 @@ button {
 	background: yellow;
 }
 
+.game-over {
+	background: slategray;
+}
+
 .break0 {
 	animation: break0 var(--transition-time) ease forwards;
 	opacity: 1;
