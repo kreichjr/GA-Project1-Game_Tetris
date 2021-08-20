@@ -147,8 +147,32 @@ const game = {
 			}
 			if (this.endingBlockCount >= 200) {
 				clearInterval(this.endingLoop)
+				this.drawGameOver()
 			}
 		}, 1000/60)
+	},
+	drawGameOver() {
+		let tag = document.createElement("span")
+		tag.setAttribute("id","#overlay")
+		tag.innerText = "Game Over"
+		document.querySelector("#play-area").append(tag)
+		tag.style.top = `${(620 - 147) / 2}px`
+		tag.style.left = `${(310 - 636) / 2}px`
+		console.log(tag.style.top)
+		setTimeout(()=>{
+			tag.setAttribute("class","expand-horiz")
+
+			const refreshButton = document.createElement("button")
+			refreshButton.innerText = "Reset Game?"
+			document.querySelector("#play-area").append(refreshButton)
+			refreshButton.style.top = (620 + 150) / 2 + "px"
+			refreshButton.style.left = ((310 - refreshButton.clientWidth) / 2) + "px" 
+
+			refreshButton.addEventListener("click", () => {
+				location.reload()
+			})
+
+		},250)
 	},
 	checkForGameOver() {
 		for (const block of this.currentPiece.blockArr) {
