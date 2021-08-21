@@ -21,6 +21,11 @@ const game = {
 	DASActive: false,
 	lockDelayActive: false,
 	lineClearActive: false,
+	levelCounter: 0,
+	sectionGenerator: null,
+	currentSection: null,
+	readyForNextSection: false,
+	winConditionMet: false,
 	ARETiming: 30,
 	DASTiming: 14,
 	lockDelayTiming: 30,
@@ -36,6 +41,8 @@ const game = {
 		this._hideStartButton()
 		this.createStack()
 		this.createPreview()
+		this.sectionGenerator = this.getNextSection()
+		this.currentSection = this.sectionGenerator.next()
 		this.nextPiece = this.randomizer.getNextPiece()
 		this.initGameLoop()
 	},
@@ -65,6 +72,13 @@ const game = {
 					this.currentPieceActive = true
 					this.ARECounter = 0
 					this.lineClearCounter = 0
+					this.lockDelayCounter = 0
+					this.lockDelayActive = false
+					if (this.levelCounter < (this.currentSection.value - 1)) {
+						this.levelCounter++
+					} else {
+						this.readyForNextSection = true
+					}
 					if (this.controls.A === 1 && this.inputAConsumed === false) {
 						this.inputAConsumed = true
 						this.currentPiece.IRS(-1)
@@ -75,13 +89,24 @@ const game = {
 						this.inputCConsumed = true
 						this.currentPiece.IRS(-1)
 					}
+					this.gameIsOver = this.checkForGameOver()
 				}
-				this.gameIsOver = this.checkForGameOver()
-				if (!this.gameIsOver) {
-					// TODO: Check gravity for downwards movement
+				
+				if (!this.gameIsOver && !this.winConditionMet) {
+					if (this.currentPiece.hasFallen) {
+						this.lockDelayCounter = 0
+						console.log("Setting lock delay to 0")
+						this.currentPiece.hasFallen = false
+					}
+					
+					
+					this.updateInternalGravity(this.levelCounter)
+					this.applyGravity()
 					
 					this.chargeDAS()
 					this.rotateTetromino()
+					this.checkLockDelay()
+
 				} else {
 					clearInterval(this.gameLoop)
 					this.stack.lockBlocksToStack(this.currentPiece)
@@ -100,6 +125,8 @@ const game = {
 					this.lineClearCounter++
 					if (this.lineClearCounter === Math.floor(this.lineClearTiming/2)) {
 						this.stack.clearLines(this.completedLinesArray)
+						this.levelCounter += this.completedLinesArray.length
+						this.completedLinesArray = []
 					}
 					if (this.lineClearCounter > this.lineClearTiming) {
 						this.lineClearActive = false
@@ -119,6 +146,12 @@ const game = {
 					} else {
 						this.lineClearActive = true
 						this.stack.animateClearLines(this.completedLinesArray)
+						if (this.readyForNextSection && this.currentSection.value != 999) {
+							this.currentSection = this.sectionGenerator.next()
+							this.readyForNextSection = false
+						} else {
+							this.winConditionMet = true
+						}
 
 					}
 					
@@ -129,6 +162,75 @@ const game = {
 			game.drawBoard()	
 			
 		}, 1000/60)
+	},
+	checkLockDelay() {
+		let offTheStack = this.currentPiece.checkCollisionsAfterMove("vertical", 1, this.stack)
+		if (!offTheStack) {
+			
+			this.lockDelayActive = true
+			this.lockDelayCounter++
+			console.log(this.lockDelayCounter)
+			console.log("Has Fallen:", this.currentPiece.hasFallen)
+		}
+
+		if (this.lockDelayCounter > this.lockDelayTiming) {
+			this.readyToLockPiece = true
+
+		}
+	},
+	updateInternalGravity(level) {
+		const speeds = [
+							5120, 768, 1024, 1280, 1024, 
+							 768, 512,  256,  224,  192, 
+							 160, 128,   96,   64,   32, 
+							   4, 144,  128,  112,   96, 
+							  80,  64,   48,   32,   16, 
+							  12,  10,    8,    6,    4
+						]
+		const speedThreshholds = 
+						[
+
+							500, 450, 420, 400, 360,
+							330, 300, 251, 247, 243,
+							239, 236, 233, 230, 220,
+							200, 170, 160, 140, 120,
+							100,  90,  80,  70,  60,
+							 50,  40,  35,  30,   0
+						]
+		let speedIndex = null
+		speedThreshholds.some((threshhold, index)=>{
+			if (level >= threshhold) {
+				speedIndex = index
+				return level >= threshhold
+			}
+		})
+
+		this.internalGravity = speeds[speedIndex]
+
+
+	},
+	applyGravity() {
+		this.gravityCounter += this.internalGravity
+		let numG = Math.floor(this.gravityCounter / 256)
+		let remainder = this.gravityCounter % 256
+
+		if (numG >= 1) {
+			this.currentPiece.moveDownXAmount(this.stack, numG)
+			this.gravityCounter = remainder
+		}
+
+	},
+	* getNextSection() {
+		yield 100
+		yield 200
+		yield 300
+		yield 400
+		yield 500
+		yield 600
+		yield 700
+		yield 800
+		yield 900
+		yield 999
 	},
 	startEndingLoop() {
 		this.endingLoop = setInterval(()=>{
@@ -147,18 +249,48 @@ const game = {
 			}
 			if (this.endingBlockCount >= 200) {
 				clearInterval(this.endingLoop)
-				this.drawGameOver()
+				if (this.gameIsOver) {
+					this.drawGameOver()
+					
+				} else if (this.winConditionMet) {
+					this.drawYouWin()
+				}
 			}
 		}, 1000/60)
+	},
+	drawYouWin() {
+		let tag = document.createElement("section")
+		tag.setAttribute("id","#overlay")
+		tag.setAttribute("class","win")
+		tag.innerText = "You Win!"
+		document.querySelector("#play-area").append(tag)
+		tag.style.top = `${(620 - 147) / 2}px`
+		tag.style.left = `${(310 - 518) / 2}px`
+		
+		setTimeout(()=>{
+			tag.setAttribute("class","expand-horiz")
+
+			const refreshButton = document.createElement("button")
+			refreshButton.innerText = "Reset Game?"
+			document.querySelector("#play-area").append(refreshButton)
+			refreshButton.style.top = (620 + 150) / 2 + "px"
+			refreshButton.style.left = ((310 - refreshButton.clientWidth) / 2) + "px" 
+
+			refreshButton.addEventListener("click", () => {
+				location.reload()
+			})
+
+		},250)
 	},
 	drawGameOver() {
 		let tag = document.createElement("span")
 		tag.setAttribute("id","#overlay")
+		tag.setAttribute("class","lose")
 		tag.innerText = "Game Over"
 		document.querySelector("#play-area").append(tag)
 		tag.style.top = `${(620 - 147) / 2}px`
 		tag.style.left = `${(310 - 636) / 2}px`
-		console.log(tag.style.top)
+		
 		setTimeout(()=>{
 			tag.setAttribute("class","expand-horiz")
 
@@ -227,9 +359,9 @@ const game = {
 			} else {
 				this.DASCounter++
 			}
-		} else if (this.controls.down === 1 && !this.AREActive && !this.lockDelayActive) {
+		} else if (this.controls.down === 1 && !this.AREActive) {
 			this.readyToLockPiece = this.currentPiece.moveDownAndLockCheck(this.stack)
-		} else if (this.controls.up === 1 && !this.AREActive && !this.lockDelayActive) {
+		} else if (this.controls.up === 1 && !this.AREActive) {
 			this.currentPiece.moveDownXAmount(this.stack, 20)
 		}
 	},
@@ -254,12 +386,20 @@ const game = {
 			}
 		})
 	},
+	updateLevelCounterDiv() {
+		document.querySelector("#level-count").innerText = `${this.levelCounter}`
+	},
+	updateSectionDiv() {
+		document.querySelector("#section").innerText = `${this.currentSection.value}`
+	}, 
 	drawBoard() {
 		this.drawStack()
 		this.drawPreview()
 		if (this.currentPieceActive) {
 			this.drawCurrentTetromino()
 		}
+		this.updateLevelCounterDiv()
+		this.updateSectionDiv()
 		
 	},
 	drawPreview() {

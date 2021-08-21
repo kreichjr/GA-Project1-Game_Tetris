@@ -6,6 +6,7 @@ class Tetromino {
 		this.positionY = posY
 		this.currentOrientation = 0
 		this.orientations = []
+		this.hasFallen = false
 	}
 
 	getBlockRelativePositions() {
@@ -53,12 +54,14 @@ class Tetromino {
 	}
 
 	moveDownAndLockCheck(stack) {
+		
 		let movementDelta = 1
 		let noCollisions = this.checkCollisionsAfterMove("vertical", movementDelta, stack)
 
 		if (noCollisions) {
 			this.positionY += movementDelta
 			this.updateBlockPositions(movementDelta, "y")
+			this.hasFallen = true
 
 			return false
 		}
@@ -68,7 +71,6 @@ class Tetromino {
 	moveDownXAmount(stack, distance) {
 		let validFallDistance = 0
 		
-
 		for (let i = 1; i <= distance; i++) {
 			let validMove = true
 			this.blockArr.forEach((block)=>{
@@ -90,6 +92,10 @@ class Tetromino {
 
 		this.positionY += validFallDistance
 		this.updateBlockPositions(validFallDistance, "y")
+		if (validFallDistance) {
+			this.hasFallen = true
+			console.log("This is happening")
+		}
 	}
 
 	checkCollisionsAfterMove(dir, delta, stack) {
