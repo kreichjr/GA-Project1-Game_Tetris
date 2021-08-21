@@ -126,6 +126,10 @@ const game = {
 					if (this.lineClearCounter === Math.floor(this.lineClearTiming/2)) {
 						this.stack.clearLines(this.completedLinesArray)
 						this.levelCounter += this.completedLinesArray.length
+						if (this.levelCounter > 999) {
+							this.levelCounter = 999
+							this.winConditionMet = true
+						}
 						this.completedLinesArray = []
 					}
 					if (this.lineClearCounter > this.lineClearTiming) {
@@ -146,11 +150,9 @@ const game = {
 					} else {
 						this.lineClearActive = true
 						this.stack.animateClearLines(this.completedLinesArray)
-						if (this.readyForNextSection && this.currentSection.value != 999) {
+						if (this.readyForNextSection) {
 							this.currentSection = this.sectionGenerator.next()
 							this.readyForNextSection = false
-						} else {
-							this.winConditionMet = true
 						}
 
 					}
