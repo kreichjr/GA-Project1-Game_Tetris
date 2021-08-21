@@ -7,6 +7,27 @@ Project Choice:
 
 Project Description:
   My project is creating the classic game of Tetris, where a player will control a falling block consisting of 4 smaller blocks arranged in set patterns to fill a gridded well. Completing a horizontal line in the well will clear the line from the stack, and the goal is to not have a spawning piece at the top of the well spawn on top of a placed piece (Known as topping out). The goal is to play for as long as possible in the most basic form of Tetris.
+  
+  
+  
+How to play: 
+After clicking the start game button, you will take control of your tetromino! The objective is to survive as long as possible by rotating your Tetromino and finding the best way to stack your blocks strategically.
+
+Completing an entire row of blocks will cause them to be eliminated from the playing field which is key to keeping your stack low. The game will end either when you reach level 999 or by having your next piece spawn on top of an existing block on the stack.
+
+Your level will increase for every Tetromino that spawns onto the board, as well as for each line cleared. However, at the end of each section (e.g. 99, 199, 299, etc...), there is a level stop where only clearing a line will allow you to progress to the next section.
+
+Controls:
+
+W: Sonic Drop
+S: Soft Drop
+A: Move Tetromino left
+D: Move Tetromino right
+
+M: Rotate Counter-Clockwise
+Comma (,): Rotate Clockwise
+Period (.): Rotate Counter-Clockwise
+
 
 
 User Stories
