@@ -94,7 +94,7 @@ class Tetromino {
 		this.updateBlockPositions(validFallDistance, "y")
 		if (validFallDistance) {
 			this.hasFallen = true
-			console.log("This is happening")
+			
 		}
 	}
 

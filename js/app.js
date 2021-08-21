@@ -95,7 +95,7 @@ const game = {
 				if (!this.gameIsOver && !this.winConditionMet) {
 					if (this.currentPiece.hasFallen) {
 						this.lockDelayCounter = 0
-						console.log("Setting lock delay to 0")
+						
 						this.currentPiece.hasFallen = false
 					}
 					
