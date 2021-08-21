@@ -2,16 +2,38 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>Tetris by KReichJr</title>
+	<title>Ken-tris by KReichJr</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-	<header>
-		<h2>Tetris clone</h2>
-		<h4>by Kenneth "KReichJr" Reichelderfer Jr</h4>
-	</header>
+	<aside>
+		<div id="aside-container">
+			<header>
+				<div id="header-container">
+					<h2>Ken-tris</h2>
+					<h4>by Kenneth "KReichJr" Reichelderfer Jr</h4>
+				</div>
+			</header>
+			<div id="content-container">
+				<p>How to play: After clicking the start game button, you will take control of your tetromino! The objective is to survive as long as possible by rotating your Tetromino and finding the best way to stack your blocks strategically.</p>
+				<p>Completing an entire row of blocks will cause them to be eliminated from the playing field which is key to keeping your stack low. The game will end either when you reach level 999 or by having your next piece spawn on top of an existing block on the stack.</p>
+				<p>Your level will increase for every Tetromino that spawns onto the board, as well as for each line cleared. However, at the end of each section (e.g. 99, 199, 299, etc...), there is a level stop where only clearing a line will allow you to progress to the next section.</p>
+				<p>Controls:</p>
+				<ul>
+					<li>W: Sonic Drop</li>
+					<li>S: Soft Drop</li>
+					<li>A: Move Tetromino left</li>
+					<li>D: Move Tetromino right</li>
+					<br>
+					<li>M: Rotate Counter-Clockwise</li>
+					<li>Comma (,): Rotate Clockwise</li>
+					<li>Period (.): Rotate Counter-Clockwise</li>
+				</ul>
+			</div>
+		</div>
+	</aside>
 	<main>
-		<div id="main">
+		<div id="main-container">
 			<div id="preview-container">
 				<div id="preview-area"></div>
 			</div>
