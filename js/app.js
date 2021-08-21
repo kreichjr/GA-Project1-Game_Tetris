@@ -171,8 +171,7 @@ const game = {
 			
 			this.lockDelayActive = true
 			this.lockDelayCounter++
-			console.log(this.lockDelayCounter)
-			console.log("Has Fallen:", this.currentPiece.hasFallen)
+			
 		}
 
 		if (this.lockDelayCounter > this.lockDelayTiming) {
